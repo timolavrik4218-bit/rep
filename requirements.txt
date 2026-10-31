@@ -3,3 +3,4 @@ supabase
 python-dotenv
 uvicorn[standard]
 gunicorn
+jinja2
