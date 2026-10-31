@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Tiny5&display=swap');
+
+body {
+    font-family: 'Tiny5', sans-serif;
+    background-color: #EB7C6E; /* глибокий корал */
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+h1 {
+    color: #FFF9E6;
+    margin-top: 0;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #FFF9E6;
+}
+
+input {
+    font-family: 'Tiny5', sans-serif;
+    padding: 10px 14px;
+    border-radius: 5px;
+    border: 2px solid transparent;
+    background-color: #FFE6D9; /* ніжний персик */
+    color: #4A0E0E;
+}
+
+input:focus {
+    outline: none;
+    border-color: #F7C73D;
+}
+
+button {
+    font-family: 'Tiny5', sans-serif;
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    background-color: #F7C73D; /* золотистий */
+    color: #4A0E0E;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #E69F00; /* бурштин */
+    color: #FFFFFF;
+}
+
+.delete-button {
+    background-color: #EF476F;
+    color: #FFFFFF;
+}
+
+.delete-button:hover {
+    background-color: #D63A5E;
+}
+
+.cancel-button {
+    background-color: #FFE6D9;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 600px;
+}
+
+li {
+    background-color: #FFE6D9;
+    color: #4A0E0E;
+    border-radius: 5px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+}
+
+.task-details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.task-details span {
+    flex: 1;
+    word-break: break-word;
+}
+
+.edit-form {
+    margin: 0;
+}
+
+.edit-form label {
+    color: #4A0E0E;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+#message {
+    background-color: #EF476F;
+    color: #FFFFFF;
+    padding: 10px 16px;
+    border-radius: 5px;
+}

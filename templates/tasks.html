@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Список завдань</title>
+    <link rel="stylesheet" href="/static/css/main.css?v=2" />
+  </head>
+  <body>
+    <h1>Список завдань</h1>
+    <form id="add-task-form">
+      <label>
+        Завдання
+        <input name="title" required />
+      </label>
+      <button type="submit">Додати</button>
+    </form>
+    <p id="message" role="status" hidden></p>
+    <ul>
+      {% for item in tasks %}
+      <li data-task-id="{{ item.id }}">
+        <div class="task-details">
+          <span>{{ item.title }}</span>
+          <button type="button" class="edit-button">Редагувати</button>
+          <button type="button" class="delete-button">Видалити</button>
+        </div>
+        <form class="edit-form" hidden>
+          <label>
+            Завдання
+            <input name="title" value="{{ item.title }}" required />
+          </label>
+          <button type="submit">Зберегти</button>
+          <button type="button" class="cancel-button">Скасувати</button>
+        </form>
+      </li>
+      {% else %}
+      <li>Завдань поки немає</li>
+      {% endfor %}
+    </ul>
+    <script>
+      const message = document.getElementById("message");
+
+      async function sendRequest(url, method, body) {
+        const options = { method, headers: {} };
+        if (body) {
+          options.headers["Content-Type"] = "application/json";
+          options.body = JSON.stringify(body);
+        }
+        const response = await fetch(url, options);
+        const responseText = await response.text();
+        if (!response.ok) {
+          let detail;
+          try {
+            detail = JSON.parse(responseText).detail;
+          } catch {
+            detail = null;
+          }
+          throw new Error(detail || `Помилка сервера (${response.status})`);
+        }
+      }
+
+      function showError(error) {
+        message.textContent = error.message;
+        message.hidden = false;
+      }
+
+      document.getElementById("add-task-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const values = new FormData(form);
+        try {
+          await sendRequest("/new", "POST", {
+            title: values.get("title").trim()
+          });
+          location.reload();
+        } catch (error) {
+          showError(error);
+        }
+      });
+
+      document.querySelectorAll("[data-task-id]").forEach((item) => {
+        const id = item.dataset.taskId;
+        const details = item.querySelector(".task-details");
+        const editForm = item.querySelector(".edit-form");
+
+        item.querySelector(".edit-button").addEventListener("click", () => {
+          details.hidden = true;
+          editForm.hidden = false;
+        });
+
+        item.querySelector(".cancel-button").addEventListener("click", () => {
+          editForm.hidden = true;
+          details.hidden = false;
+        });
+
+        editForm.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const values = new FormData(editForm);
+          try {
+            await sendRequest(`/item-edit/${id}`, "PATCH", {
+              title: values.get("title").trim()
+            });
+            location.reload();
+          } catch (error) {
+            showError(error);
+          }
+        });
+
+        item.querySelector(".delete-button").addEventListener("click", async () => {
+          try {
+            await sendRequest(`/item-delete/${id}`, "DELETE");
+            location.reload();
+          } catch (error) {
+            showError(error);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
